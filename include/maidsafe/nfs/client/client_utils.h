@@ -65,7 +65,7 @@ void HandleCreateVersionTreeResult(const ReturnCode& result,
 
 void HandlePutVersionResult(
     const TipOfTreeAndReturnCode& result,
-    std::shared_ptr<boost::promise<std::unique_ptr<StructuredDataVersions::VersionName>>> promise);
+    std::shared_ptr<boost::promise<void>> promise);
 
 void HandleRegisterPmidResult(const ReturnCode& result,
                               std::shared_ptr<boost::promise<void>> promise);
@@ -78,7 +78,7 @@ void HandleGetResult<Data>::operator()(const DataNameAndContentOrReturnCode& res
     if (result.content) {
       if (result.name.type != Data::Tag::kValue) {
         LOG(kError) << "HandleGetResult incorrect returned data";
-        BOOST_THROW_EXCEPTION(MakeError(CommonErrors::invalid_parameter));
+        BOOST_THROW_EXCEPTION(MakeError(CommonErrors::invalid_argument));
       }
       LOG(kInfo) << "HandleGetResult fetched chunk has name : "
                  << HexSubstr(result.name.raw_name) << " and content : "
